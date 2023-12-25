@@ -10,6 +10,6 @@ const finalRoutes = routes.map((route) => {
     };
 });
 
-const router = createBrowserRouter(finalRoutes);
+const router  = createBrowserRouter(finalRoutes);
 
 export default router;
