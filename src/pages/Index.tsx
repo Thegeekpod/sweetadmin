@@ -418,7 +418,7 @@ const Index = () => {
                 <div className="grid xl:grid-cols-3 gap-6 mb-6">
                     <div className="panel h-full xl:col-span-2">
                         <div className="flex items-center justify-between dark:text-white-light mb-5">
-                            <h5 className="font-semibold text-lg">Revenue</h5>
+                            <h5 className="font-semibold text-lg">Revenuex</h5>
                             <div className="dropdown">
                                 <Dropdown
                                     offset={[0, 1]}
