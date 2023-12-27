@@ -12,6 +12,7 @@ import IconInstagram from '../../components/Icon/IconInstagram';
 import IconFacebookCircle from '../../components/Icon/IconFacebookCircle';
 import IconTwitter from '../../components/Icon/IconTwitter';
 import IconGoogle from '../../components/Icon/IconGoogle';
+import { useAuth } from '../../AuthContext';
 
 const LoginCover = () => {
     const dispatch = useDispatch();
@@ -35,6 +36,28 @@ const LoginCover = () => {
         navigate('/');
     };
 
+    const { login } = useAuth();
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+
+    const handleLogin = async (e: React.FormEvent) => {
+        e.preventDefault();
+        await login(username, password);
+        navigate('/');
+    };
+
+     const { token, checkAuthValidity } = useAuth();
+
+  useEffect(() => {
+    const checkAuthentication = async () => {
+      const isValid = await checkAuthValidity();
+      if (isValid) {
+        navigate('/');
+      }
+    };
+
+    checkAuthentication();
+  }, [checkAuthValidity, navigate]);
     return (
         <div>
             <div className="absolute inset-0">
@@ -107,11 +130,12 @@ const LoginCover = () => {
                                 <h1 className="text-3xl font-extrabold uppercase !leading-snug text-primary md:text-4xl">Sign in</h1>
                                 <p className="text-base font-bold leading-normal text-white-dark">Enter your email and password to login</p>
                             </div>
-                            <form className="space-y-5 dark:text-white" onSubmit={submitForm}>
+                            <form className="space-y-5 dark:text-white" onSubmit={handleLogin}>
                                 <div>
-                                    <label htmlFor="Email">Email</label>
+                                    <label htmlFor="Email">Username</label>
                                     <div className="relative text-white-dark">
-                                        <input id="Email" type="email" placeholder="Enter Email" className="form-input ps-10 placeholder:text-white-dark" />
+                                        <input id="Email" type="text" placeholder="Enter Email" className="form-input ps-10 placeholder:text-white-dark" value={username}
+                                            onChange={(e) => setUsername(e.target.value)} />
                                         <span className="absolute start-4 top-1/2 -translate-y-1/2">
                                             <IconMail fill={true} />
                                         </span>
@@ -120,7 +144,8 @@ const LoginCover = () => {
                                 <div>
                                     <label htmlFor="Password">Password</label>
                                     <div className="relative text-white-dark">
-                                        <input id="Password" type="password" placeholder="Enter Password" className="form-input ps-10 placeholder:text-white-dark" />
+                                        <input id="Password" type="password" placeholder="Enter Password" className="form-input ps-10 placeholder:text-white-dark" value={password}
+                                            onChange={(e) => setPassword(e.target.value)} />
                                         <span className="absolute start-4 top-1/2 -translate-y-1/2">
                                             <IconLockDots fill={true} />
                                         </span>

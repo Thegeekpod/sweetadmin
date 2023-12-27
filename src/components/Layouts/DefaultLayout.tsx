@@ -8,6 +8,7 @@ import Header from './Header';
 import Setting from './Setting';
 import Sidebar from './Sidebar';
 import Portals from '../../components/Portals';
+import PrivateRoute from '../../router/Protecetroute';
 
 const DefaultLayout = ({ children }: PropsWithChildren) => {
     const themeConfig = useSelector((state: IRootState) => state.themeConfig);
@@ -47,6 +48,7 @@ const DefaultLayout = ({ children }: PropsWithChildren) => {
 
     return (
         <App>
+            <PrivateRoute>
             {/* BEGIN MAIN CONTAINER */}
             <div className="relative">
                 {/* sidebar menu overlay */}
@@ -101,6 +103,7 @@ const DefaultLayout = ({ children }: PropsWithChildren) => {
                     </div>
                 </div>
             </div>
+            </PrivateRoute>
         </App>
     );
 };
