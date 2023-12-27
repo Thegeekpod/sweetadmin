@@ -1,0 +1,7 @@
+{
+    "apiroot": "https://sweetdevelopers.com/api/v1",
+    "apiendpoint": {
+        "login": "/auth/login",
+        "authcheck": "/auth/authcheck"
+    }
+}

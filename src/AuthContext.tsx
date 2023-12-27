@@ -1,5 +1,5 @@
 import React, { createContext, useState, useContext, useEffect, PropsWithChildren } from 'react';
-
+import apiconfig from './apiconfig.json';
 interface AuthContextProps {
   isAuthenticated: boolean;
   token: string | null;
@@ -30,7 +30,7 @@ export const AuthProvider: React.FC<PropsWithChildren<{}>> = ({ children }) => {
 
   const login = async (username: string, password: string) => {
     try {
-      const response = await fetch('http://localhost:8990/api/v1/auth/login', {
+      const response = await fetch(`${apiconfig.apiroot}${apiconfig.apiendpoint.login}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -60,7 +60,7 @@ export const AuthProvider: React.FC<PropsWithChildren<{}>> = ({ children }) => {
   const checkAuthValidity = async () => {
     if (token) {
       try {
-        const response = await fetch('http://localhost:8990/api/v1/auth/authcheck', {
+        const response = await fetch(`${apiconfig.apiroot}${apiconfig.apiendpoint.authcheck}`, {
           method: 'GET',
           headers: {
             Authorization: `Bearer ${token}`,
