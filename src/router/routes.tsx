@@ -539,7 +539,7 @@ const routes = [
     },
     {
         path: '*',
-        element: <Error />,
+        element: <ERROR404 />,
         layout: 'blank',
     },
 ];

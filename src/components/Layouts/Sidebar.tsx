@@ -92,35 +92,13 @@ const Sidebar = () => {
                     </div>
                     <PerfectScrollbar className="h-[calc(100vh-80px)] relative">
                         <ul className="relative font-semibold space-y-0.5 p-4 py-0">
-                            <li className="menu nav-item">
-                                <button type="button" className={`${currentMenu === 'dashboard' ? 'active' : ''} nav-link group w-full`} onClick={() => toggleMenu('dashboard')}>
+                            <li className="nav-item">
+                                <NavLink to="/" className="group">
                                     <div className="flex items-center">
-                                        <IconMenuDashboard
-                                         className="group-hover:!text-primary shrink-0" />
-                                        <span className="ltr:pl-3 rtl:pr-3 text-black dark:text-[#506690] dark:group-hover:text-white-dark">{t('dashboard')}</span>
+                                        <IconMenuChat className="group-hover:!text-primary shrink-0" />
+                                        <span className="ltr:pl-3 rtl:pr-3 text-black dark:text-[#506690] dark:group-hover:text-white-dark">{t('Dashboard')}</span>
                                     </div>
-
-                                    <div className={currentMenu !== 'dashboard' ? 'rtl:rotate-90 -rotate-90' : ''}>
-                                        <IconCaretDown />
-                                    </div>
-                                </button>
-
-                                <AnimateHeight duration={300} height={currentMenu === 'dashboard' ? 'auto' : 0}>
-                                    <ul className="sub-menu text-gray-500">
-                                        <li>
-                                            <NavLink to="/">{t('sales')}</NavLink>
-                                        </li>
-                                        <li>
-                                            <NavLink to="/analytics">{t('analytics')}</NavLink>
-                                        </li>
-                                        <li>
-                                            <NavLink to="/finance">{t('finance')}</NavLink>
-                                        </li>
-                                        <li>
-                                            <NavLink to="/crypto">{t('crypto')}</NavLink>
-                                        </li>
-                                    </ul>
-                                </AnimateHeight>
+                                </NavLink>
                             </li>
 
                             <h2 className="py-3 px-7 flex items-center uppercase font-extrabold bg-white-light/30 dark:bg-dark dark:bg-opacity-[0.08] -mx-4 mb-1">
@@ -128,8 +106,17 @@ const Sidebar = () => {
                                 <span>{t('apps')}</span>
                             </h2>
 
+
                             <li className="nav-item">
                                 <ul>
+                                <li className="nav-item">
+                                        <NavLink to="/apps/contacts" className="group">
+                                            <div className="flex items-center">
+                                                <IconMenuContacts className="group-hover:!text-primary shrink-0" />
+                                                <span className="ltr:pl-3 rtl:pr-3 text-black dark:text-[#506690] dark:group-hover:text-white-dark">{t('Employees')}</span>
+                                            </div>
+                                        </NavLink>
+                                    </li>
                                     <li className="nav-item">
                                         <NavLink to="/apps/chat" className="group">
                                             <div className="flex items-center">
@@ -170,14 +157,7 @@ const Sidebar = () => {
                                             </div>
                                         </NavLink>
                                     </li>
-                                    <li className="nav-item">
-                                        <NavLink to="/apps/contacts" className="group">
-                                            <div className="flex items-center">
-                                                <IconMenuContacts className="group-hover:!text-primary shrink-0" />
-                                                <span className="ltr:pl-3 rtl:pr-3 text-black dark:text-[#506690] dark:group-hover:text-white-dark">{t('contacts')}</span>
-                                            </div>
-                                        </NavLink>
-                                    </li>
+                                  
 
                                     <li className="menu nav-item">
                                         <button type="button" className={`${currentMenu === 'invoice' ? 'active' : ''} nav-link group w-full`} onClick={() => toggleMenu('invoice')}>
@@ -593,9 +573,8 @@ const Sidebar = () => {
                                         <li className="menu nav-item">
                                             <button
                                                 type="button"
-                                                className={`${
-                                                    errorSubMenu ? 'open' : ''
-                                                } w-full before:bg-gray-300 before:w-[5px] before:h-[5px] before:rounded ltr:before:mr-2 rtl:before:ml-2 dark:text-[#888ea8] hover:bg-gray-100 dark:hover:bg-gray-900`}
+                                                className={`${errorSubMenu ? 'open' : ''
+                                                    } w-full before:bg-gray-300 before:w-[5px] before:h-[5px] before:rounded ltr:before:mr-2 rtl:before:ml-2 dark:text-[#888ea8] hover:bg-gray-100 dark:hover:bg-gray-900`}
                                                 onClick={() => setErrorSubMenu(!errorSubMenu)}
                                             >
                                                 {t('error')}

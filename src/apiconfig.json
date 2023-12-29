@@ -2,6 +2,12 @@
     "apiroot": "https://sweetdevelopers.com/api/v1",
     "apiendpoint": {
         "login": "/auth/login",
-        "authcheck": "/auth/authcheck"
+        "authcheck": "/auth/authcheck",
+        "addemploy":"/employ/add",
+        "listemploy":"/employ/list",
+        "updatemploy":"/employ/update",
+        "deletetemploy":"/employ/delete"
+
+
     }
 }

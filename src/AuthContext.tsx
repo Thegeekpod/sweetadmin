@@ -1,8 +1,18 @@
 import React, { createContext, useState, useContext, useEffect, PropsWithChildren } from 'react';
 import apiconfig from './apiconfig.json';
+
+interface UserData {
+  // Define the structure of your user data here
+  // For example:
+  id: number;
+  username: string;
+  // ... other fields
+}
+
 interface AuthContextProps {
   isAuthenticated: boolean;
   token: string | null;
+  userData: UserData | null;
   login: (username: string, password: string) => Promise<void>;
   logout: () => void;
   checkAuthValidity: () => Promise<boolean>;
@@ -20,6 +30,7 @@ export const useAuth = () => {
 
 export const AuthProvider: React.FC<PropsWithChildren<{}>> = ({ children }) => {
   const [token, setToken] = useState<string | null>(localStorage.getItem('token'));
+  const [userData, setUserData] = useState<UserData | null>(null);
 
   useEffect(() => {
     const storedToken = localStorage.getItem('token');
@@ -43,6 +54,7 @@ export const AuthProvider: React.FC<PropsWithChildren<{}>> = ({ children }) => {
         const authToken = data.token;
         setToken(authToken);
         localStorage.setItem('token', authToken);
+        await fetchUserData(); // Fetch user data after successful login
       } else {
         throw new Error('Authentication failed');
       }
@@ -55,7 +67,39 @@ export const AuthProvider: React.FC<PropsWithChildren<{}>> = ({ children }) => {
   const logout = () => {
     setToken(null);
     localStorage.removeItem('token');
+    setUserData(null); // Clear user data on logout
   };
+
+  const fetchUserData = async () => {
+    if (token) {
+      try {
+        const response = await fetch('http://localhost:8990/api/v1/auth/profile', {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (response.ok) {
+          const userData = await response.json() as UserData;
+          setUserData(userData); // Store fetched user data
+        } else {
+          throw new Error('Failed to fetch user data');
+        }
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+        // Handle errors while fetching user data
+      }
+    } else {
+      // Handle case when no token is available
+    }
+  };
+
+  useEffect(() => {
+    fetchUserData(); // Fetch user data when component mounts or token changes
+  }, [token]);
+
+  const isAuthenticated = !!token;
 
   const checkAuthValidity = async () => {
     if (token) {
@@ -81,11 +125,10 @@ export const AuthProvider: React.FC<PropsWithChildren<{}>> = ({ children }) => {
     }
   };
 
-  const isAuthenticated = !!token;
-
   const authContextValue: AuthContextProps = {
     isAuthenticated,
     token,
+    userData,
     login,
     logout,
     checkAuthValidity,
