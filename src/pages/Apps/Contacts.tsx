@@ -49,7 +49,23 @@ const Employees = () => {
     const [search, setSearch] = useState<any>('');
     const [employeList, setEmployeList] = useState<any[]>([]);
     const [filteredItems, setFilteredItems] = useState<any[]>([]);
+    const [actionTrigger, setActionTrigger] = useState(0);
+    useEffect(() => {
+        // Fetch data from the API
+        const fetchData = async () => {
+            try {
+                const response = await axios.post(`${apiconfig.apiroot}${apiconfig.apiendpoint.listemploy}`); // Replace with your API endpoint
+                // Assuming the API response is an array of Employees with 'name' property
 
+                // Update employeList state with fetched data
+                setEmployeList(response.data);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+
+        fetchData();
+    }, [actionTrigger]); // Empty dependency array runs this effect only once on component mount
     
     useEffect(() => {
         // Filter the employe list based on the search query
@@ -107,6 +123,7 @@ const Employees = () => {
                 });
     
                 showMessage('User has been updated successfully.');
+                setActionTrigger(prev => prev + 1);
             } else {
                 // Add user
                 let maxUserId = filteredItems.length ? Math.max(...filteredItems.map(item => item.id)) : 0;
@@ -132,6 +149,7 @@ const Employees = () => {
                 });
     
                 showMessage('User has been added successfully.');
+                setActionTrigger(prev => prev + 1);
                 filteredItems.splice(0, 0, user);
             }
     
@@ -160,6 +178,7 @@ const Employees = () => {
    
 
     const editUser = (user: any = null) => {
+        setActionTrigger(prev => prev + 1);
         const json = JSON.parse(JSON.stringify(defaultParams));
         setParams(json);
         if (user) {
@@ -196,6 +215,7 @@ const Employees = () => {
                 if (response.ok) {
                     setFilteredItems(filteredItems.filter((d: any) => d.id !== user.id));
                     Swal.fire('Success', 'User has been deleted successfully.', 'success');
+                    setActionTrigger(prev => prev + 1);
                 } else {
                     Swal.fire('Error', 'Failed to delete user.', 'error');
                 }
@@ -224,22 +244,6 @@ const Employees = () => {
         });
     };
 
-    useEffect(() => {
-        // Fetch data from the API
-        const fetchData = async () => {
-            try {
-                const response = await axios.post(`${apiconfig.apiroot}${apiconfig.apiendpoint.listemploy}`); // Replace with your API endpoint
-                // Assuming the API response is an array of Employees with 'name' property
-
-                // Update employeList state with fetched data
-                setEmployeList(response.data);
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            }
-        };
-
-        fetchData();
-    }, [deleteUser,saveUser,editUser]); // Empty dependency array runs this effect only once on component mount
     return (
         <div>
             <div className="flex items-center justify-between flex-wrap gap-4">
