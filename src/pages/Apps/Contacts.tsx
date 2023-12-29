@@ -50,24 +50,15 @@ const Employees = () => {
     const [employeList, setEmployeList] = useState<any[]>([]);
     const [filteredItems, setFilteredItems] = useState<any[]>([]);
 
+    
     useEffect(() => {
-        // Fetch data from the API
-        const fetchData = async () => {
-            try {
-                const response = await axios.post(`${apiconfig.apiroot}${apiconfig.apiendpoint.listemploy}`); // Replace with your API endpoint
-                // Assuming the API response is an array of Employees with 'name' property
-
-                // Update employeList state with fetched data
-                setEmployeList(response.data);
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            }
-        };
-
-        fetchData();
-    }, []); // Empty dependency array runs this effect only once on component mount
-    console.log(employeList)
- 
+        // Filter the employe list based on the search query
+        const filtered = employeList.filter(
+            (item: Employe) =>
+                item.name.toLowerCase().includes(search.toLowerCase())
+        );
+        setFilteredItems(filtered);
+    }, [search, employeList]);
 
     const saveUser = async () => {
         if (typeof params.username !== 'string' || !params.username.trim()) {
@@ -232,14 +223,23 @@ const Employees = () => {
             padding: '10px 20px',
         });
     };
+
     useEffect(() => {
-        // Filter the employe list based on the search query
-        const filtered = employeList.filter(
-            (item: Employe) =>
-                item.name.toLowerCase().includes(search.toLowerCase())
-        );
-        setFilteredItems(filtered);
-    }, [search, employeList,saveUser]);
+        // Fetch data from the API
+        const fetchData = async () => {
+            try {
+                const response = await axios.post(`${apiconfig.apiroot}${apiconfig.apiendpoint.listemploy}`); // Replace with your API endpoint
+                // Assuming the API response is an array of Employees with 'name' property
+
+                // Update employeList state with fetched data
+                setEmployeList(response.data);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+
+        fetchData();
+    }, [deleteUser,saveUser,editUser]); // Empty dependency array runs this effect only once on component mount
     return (
         <div>
             <div className="flex items-center justify-between flex-wrap gap-4">
