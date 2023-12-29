@@ -29,6 +29,9 @@ const Employees = () => {
     const [value, setValue] = useState<any>('list');
     const [defaultParams] = useState({
         id: null,
+        username:'',
+        password:'',
+        userType:'',
         name: '',
         email: '',
         phone_number: '',
@@ -64,14 +67,7 @@ const Employees = () => {
         fetchData();
     }, []); // Empty dependency array runs this effect only once on component mount
     console.log(employeList)
-    useEffect(() => {
-        // Filter the employe list based on the search query
-        const filtered = employeList.filter(
-            (item: Employe) =>
-                item.name.toLowerCase().includes(search.toLowerCase())
-        );
-        setFilteredItems(filtered);
-    }, [search, employeList]);
+ 
 
     const saveUser = async () => {
         if (typeof params.username !== 'string' || !params.username.trim()) {
@@ -236,7 +232,14 @@ const Employees = () => {
             padding: '10px 20px',
         });
     };
-
+    useEffect(() => {
+        // Filter the employe list based on the search query
+        const filtered = employeList.filter(
+            (item: Employe) =>
+                item.name.toLowerCase().includes(search.toLowerCase())
+        );
+        setFilteredItems(filtered);
+    }, [search, employeList,saveUser]);
     return (
         <div>
             <div className="flex items-center justify-between flex-wrap gap-4">
@@ -276,8 +279,8 @@ const Employees = () => {
                                 <tr>
                                     <th>Name</th>
                                     <th>Email</th>
-                                    <th>address</th>
-                                    <th>phone_number</th>
+                                    <th>Address</th>
+                                    <th>Phone Number</th>
                                     <th className="!text-center">Actions</th>
                                 </tr>
                             </thead>
@@ -393,7 +396,7 @@ const Employees = () => {
                                                 <div className="truncate text-white-dark">{employe.email}</div>
                                             </div>
                                             <div className="flex items-center">
-                                                <div className="flex-none ltr:mr-2 rtl:ml-2">phone_number :</div>
+                                                <div className="flex-none ltr:mr-2 rtl:ml-2">Phone Number :</div>
                                                 <div className="text-white-dark">{employe.phone_number}</div>
                                             </div>
                                             <div className="flex items-center">
@@ -478,8 +481,8 @@ const Employees = () => {
                                                 <input id="email" type="email" placeholder="Enter Email" className="form-input" value={params.email} onChange={(e) => changeValue(e)} />
                                             </div>
                                             <div className="mb-5">
-                                                <label htmlFor="number">phone_number Number</label>
-                                                <input id="phone_number" type="text" placeholder="Enter phone_number Number" className="form-input" value={params.phone_number} onChange={(e) => changeValue(e)} />
+                                                <label htmlFor="number">Phone Number</label>
+                                                <input id="phone_number" type="text" placeholder="Enter phone_number" className="form-input" value={params.phone_number} onChange={(e) => changeValue(e)} />
                                             </div>
                                             <div className="mb-5">
                                                 <label htmlFor="occupation">Occupation</label>
