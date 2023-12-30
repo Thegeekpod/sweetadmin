@@ -3,6 +3,7 @@
     "apiendpoint": {
         "login": "/auth/login",
         "authcheck": "/auth/authcheck",
+        "profile":"/auth/profile",
         "addemploy":"/employ/add",
         "listemploy":"/employ/list",
         "updatemploy":"/employ/update",

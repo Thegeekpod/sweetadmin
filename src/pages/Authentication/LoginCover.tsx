@@ -46,7 +46,7 @@ const LoginCover = () => {
         navigate('/');
     };
 
-     const { token, checkAuthValidity } = useAuth();
+     const {checkAuthValidity } = useAuth();
 
   useEffect(() => {
     const checkAuthentication = async () => {

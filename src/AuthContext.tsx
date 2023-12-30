@@ -1,12 +1,18 @@
 import React, { createContext, useState, useContext, useEffect, PropsWithChildren } from 'react';
-import apiconfig from './apiconfig.json';
+import apiconfig from './api/apiconfig.json';
 
 interface UserData {
   // Define the structure of your user data here
   // For example:
   id: number;
   username: string;
-  // ... other fields
+  address: string;
+  email: string;
+  name: string;
+  occupation: string;
+  user_type:string;
+  phone_number:string;
+
 }
 
 interface AuthContextProps {
@@ -73,7 +79,7 @@ export const AuthProvider: React.FC<PropsWithChildren<{}>> = ({ children }) => {
   const fetchUserData = async () => {
     if (token) {
       try {
-        const response = await fetch('http://localhost:8990/api/v1/auth/profile', {
+        const response = await fetch(`${apiconfig.apiroot}${apiconfig.apiendpoint.profile}`, {
           method: 'GET',
           headers: {
             Authorization: `Bearer ${token}`,

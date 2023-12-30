@@ -14,7 +14,9 @@ import IconTwitter from '../../components/Icon/IconTwitter';
 import IconX from '../../components/Icon/IconX';
 import axios from 'axios';
 import Swal from 'sweetalert2';
-import apiconfig from '../../apiconfig.json';
+import apiconfig from '../../api/apiconfig.json';
+import { apiHeaders } from '../../api/helpapi';
+import { useAuth } from '../../AuthContext';
 interface Employe {
     name: string;
     // Add other properties according to your employe object
@@ -24,6 +26,8 @@ const Employees = () => {
     useEffect(() => {
         dispatch(setPageTitle('Employees'));
     });
+
+    
     const [addEmployeModal, setAddEmployeModal] = useState<any>(false);
 
     const [value, setValue] = useState<any>('list');
@@ -54,10 +58,11 @@ const Employees = () => {
         // Fetch data from the API
         const fetchData = async () => {
             try {
-                const response = await axios.post(`${apiconfig.apiroot}${apiconfig.apiendpoint.listemploy}`); // Replace with your API endpoint
-                // Assuming the API response is an array of Employees with 'name' property
-
-                // Update employeList state with fetched data
+                const response = await axios.post(
+                    `${apiconfig.apiroot}${apiconfig.apiendpoint.listemploy}`,
+                    {/* If you have any request data, add it here */},
+                    apiHeaders
+                ); 
                 setEmployeList(response.data);
             } catch (error) {
                 console.error('Error fetching data:', error);
@@ -116,11 +121,7 @@ const Employees = () => {
                 user.password = params.password;
                 user.userType = params.userType;
     
-                await axios.put(`${apiconfig.apiroot}${apiconfig.apiendpoint.updatemploy}/${params.id}`, user, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                });
+                await axios.put(`${apiconfig.apiroot}${apiconfig.apiendpoint.updatemploy}/${params.id}`, user, apiHeaders);
     
                 showMessage('User has been updated successfully.');
                 setActionTrigger(prev => prev + 1);
@@ -142,11 +143,7 @@ const Employees = () => {
     
                 
     
-                await axios.post(`${apiconfig.apiroot}${apiconfig.apiendpoint.addemploy}`, user, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                });
+                await axios.post(`${apiconfig.apiroot}${apiconfig.apiendpoint.addemploy}`, user, apiHeaders);
     
                 showMessage('User has been added successfully.');
                 setActionTrigger(prev => prev + 1);
@@ -205,15 +202,10 @@ const Employees = () => {
 
         if (confirmation.isConfirmed) {
             try {
-                const response = await fetch(`${apiconfig.apiroot}${apiconfig.apiendpoint.deletetemploy}/${user.id}`, {
-                    method: 'DELETE',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                });
-
-                if (response.ok) {
-                    setFilteredItems(filteredItems.filter((d: any) => d.id !== user.id));
+                const response = await axios.delete(`${apiconfig.apiroot}${apiconfig.apiendpoint.deletetemploy}/${user.id}`, apiHeaders);
+            
+                if (response.status === 200) {
+                    setFilteredItems(prevItems => prevItems.filter((d: any) => d.id !== user.id));
                     Swal.fire('Success', 'User has been deleted successfully.', 'success');
                     setActionTrigger(prev => prev + 1);
                 } else {
@@ -320,9 +312,12 @@ const Employees = () => {
                                                     <button type="button" className="btn btn-sm btn-outline-primary" onClick={() => editUser(employe)}>
                                                         Edit
                                                     </button>
+                                                    {employe?.user_type === "Master_Admin" ? '':
                                                     <button type="button" className="btn btn-sm btn-outline-danger" onClick={() => deleteUser(employe)}>
-                                                        Delete
-                                                    </button>
+                                                    Delete
+                                                </button>
+                                                    }
+                                                    
                                                 </div>
                                             </td>
                                         </tr>
@@ -459,7 +454,7 @@ const Employees = () => {
                                             </div>
                                             <div className="mb-5">
                                                 <label htmlFor="password">password</label>
-                                                <input id="password" type="text" placeholder="Enter password" className="form-input" value={params.password} onChange={(e) => changeValue(e)} />
+                                                <input id="password" type="password" placeholder="Enter password" className="form-input" value={params.password} onChange={(e) => changeValue(e)} />
                                             </div>
                                             <div className="mb-5">
                                                 <label htmlFor="password">user type</label>
