@@ -10,8 +10,8 @@ interface UserData {
   email: string;
   name: string;
   occupation: string;
-  user_type:string;
-  phone_number:string;
+  userType:string;
+  phoneNumber:string;
 
 }
 
