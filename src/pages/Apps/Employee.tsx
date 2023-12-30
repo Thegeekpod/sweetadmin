@@ -38,7 +38,7 @@ const Employees = () => {
         userType:'',
         name: '',
         email: '',
-        phone_number: '',
+        phoneNumber: '',
         occupation: '',
         address: '',
     });
@@ -86,10 +86,10 @@ const Employees = () => {
             showMessage('Username must be a non-empty string.', 'error');
             return;
         }
-        if (typeof params.password !== 'string' || !params.password.trim()) {
-            showMessage('Password must be a non-empty string.', 'error');
-            return;
-        }
+        // if (typeof params.password !== 'string' || !params.password.trim()) {
+        //     showMessage('Password must be a non-empty string.', 'error');
+        //     return;
+        // }
         if (typeof params.name !== 'string' || !params.name.trim()) {
             showMessage('Name must be a non-empty string.', 'error');
             return;
@@ -98,7 +98,7 @@ const Employees = () => {
             showMessage('Email must be a non-empty string.', 'error');
             return;
         }
-        if (typeof params.phone_number !== 'string' || !params.phone_number.trim()) {
+        if (typeof params.phoneNumber !== 'string' || !params.phoneNumber.trim()) {
             showMessage('Phone number must be a non-empty string.', 'error');
             return;
         }
@@ -115,10 +115,10 @@ const Employees = () => {
                 user.username = params.username;
                 user.name = params.name;
                 user.email = params.email;
-                user.phoneNumber = params.phone_number;
+                user.phoneNumber = params.phoneNumber;
                 user.occupation = params.occupation;
                 user.address = params.address;
-                user.password = params.password;
+                user.password = null || params.password;
                 user.userType = params.userType;
     
                 await axios.put(`${apiconfig.apiroot}${apiconfig.apiendpoint.updatemploy}/${params.id}`, user, apiHeaders);
@@ -134,7 +134,7 @@ const Employees = () => {
                     username: params.username,
                     name: params.name,
                     email: params.email,
-                    phoneNumber: params.phone_number,
+                    phoneNumber: params.phoneNumber,
                     occupation: params.occupation,
                     address: params.address,
                     password: params.password,
@@ -178,8 +178,11 @@ const Employees = () => {
         setActionTrigger(prev => prev + 1);
         const json = JSON.parse(JSON.stringify(defaultParams));
         setParams(json);
+    
         if (user) {
-            let json1 = JSON.parse(JSON.stringify(user));
+            // Omitting password field from user object
+            const { password, ...userWithoutPassword } = user;
+            let json1 = JSON.parse(JSON.stringify(userWithoutPassword));
             setParams(json1);
         }
         setAddEmployeModal(true);
@@ -306,13 +309,13 @@ const Employees = () => {
                                             </td>
                                             <td>{employe.email}</td>
                                             <td className="whitespace-nowrap">{employe.address}</td>
-                                            <td className="whitespace-nowrap">{employe.phone_number}</td>
+                                            <td className="whitespace-nowrap">{employe.phoneNumber}</td>
                                             <td>
                                                 <div className="flex gap-4 items-center justify-center">
                                                     <button type="button" className="btn btn-sm btn-outline-primary" onClick={() => editUser(employe)}>
                                                         Edit
                                                     </button>
-                                                    {employe?.user_type === "Master_Admin" ? '':
+                                                    {employe?.userType === "Master_Admin" ? '':
                                                     <button type="button" className="btn btn-sm btn-outline-danger" onClick={() => deleteUser(employe)}>
                                                     Delete
                                                 </button>
@@ -396,7 +399,7 @@ const Employees = () => {
                                             </div>
                                             <div className="flex items-center">
                                                 <div className="flex-none ltr:mr-2 rtl:ml-2">Phone Number :</div>
-                                                <div className="text-white-dark">{employe.phone_number}</div>
+                                                <div className="text-white-dark">{employe.phoneNumber}</div>
                                             </div>
                                             <div className="flex items-center">
                                                 <div className="flex-none ltr:mr-2 rtl:ml-2">Address :</div>
@@ -454,20 +457,20 @@ const Employees = () => {
                                             </div>
                                             <div className="mb-5">
                                                 <label htmlFor="password">password</label>
-                                                <input id="password" type="password" placeholder="Enter password" className="form-input" value={params.password} onChange={(e) => changeValue(e)} />
+                                                <input id="password" type="text" placeholder="Enter password"  className="form-input" onChange={(e) => changeValue(e)} />
                                             </div>
                                             <div className="mb-5">
-                                                <label htmlFor="password">user type</label>
+                                                <label htmlFor="userType">user type</label>
                                                 <select
                                                     id="userType"
-                                                    // value={params.user_type}
+                                                    // value={params.userType}
                                                     onChange={(e) => changeValue(e)}
                                                     className="form-input"
                                                 >
                                                     <option value="">Select Type</option>
-                                                    <option value="Master_Admin" selected={params.user_type  === 'Master_Admin' }>Master_admin</option>
-                                                    <option value="Employ" selected={params.user_type  === 'Employ' }>Employ</option>
-                                                    <option value="Client" selected={params.user_type  === 'Client' }>Client</option>
+                                                    <option value="Master_Admin" selected={params.userType  === 'Master_Admin' }>Master_admin</option>
+                                                    <option value="Employ" selected={params.userType  === 'Employ' }>Employ</option>
+                                                    <option value="Client" selected={params.userType  === 'Client' }>Client</option>
                                                     {/* Add other options as needed */}
                                                 </select>
                                             </div>
@@ -481,7 +484,7 @@ const Employees = () => {
                                             </div>
                                             <div className="mb-5">
                                                 <label htmlFor="number">Phone Number</label>
-                                                <input id="phone_number" type="text" placeholder="Enter phone_number" className="form-input" value={params.phone_number} onChange={(e) => changeValue(e)} />
+                                                <input id="phoneNumber" type="text" placeholder="Enter phoneNumber" className="form-input" value={params.phoneNumber} onChange={(e) => changeValue(e)} />
                                             </div>
                                             <div className="mb-5">
                                                 <label htmlFor="occupation">Occupation</label>
