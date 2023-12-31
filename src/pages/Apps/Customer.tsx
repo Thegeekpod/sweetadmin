@@ -15,25 +15,19 @@ import IconX from '../../components/Icon/IconX';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import apiconfig from '../../api/apiconfig.json';
-// import { apiHeaders } from '../../api/helpapi';
+import { apiHeaders } from '../../api/helpapi';
 import { useAuth } from '../../AuthContext';
 interface Employe {
     name: string;
+    // Add other properties according to your employe object
 }
-const Employees = () => {
-    const {token} = useAuth();
-    
-     const apiHeaders =  {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json"
-        }
-      };
-  
+const Customer = () => {
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(setPageTitle('Employees'));
     });
+
+    
     const [addEmployeModal, setAddEmployeModal] = useState<any>(false);
 
     const [value, setValue] = useState<any>('list');
@@ -527,4 +521,4 @@ const Employees = () => {
     );
 };
 
-export default Employees;
+export default Customer;

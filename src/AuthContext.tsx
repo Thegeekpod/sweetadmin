@@ -13,6 +13,7 @@ interface UserData {
   userType:string;
   phoneNumber:string;
 
+
 }
 
 interface AuthContextProps {
@@ -22,6 +23,7 @@ interface AuthContextProps {
   login: (username: string, password: string) => Promise<void>;
   logout: () => void;
   checkAuthValidity: () => Promise<boolean>;
+  
 }
 
 const AuthContext = createContext<AuthContextProps | null>(null);
