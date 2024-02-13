@@ -4,6 +4,7 @@ import { IRootState } from './store';
 import { toggleRTL, toggleTheme, toggleLocale, toggleMenu, toggleLayout, toggleAnimation, toggleNavbar, toggleSemidark } from './store/themeConfigSlice';
 import store from './store';
 import { AuthProvider } from './AuthContext';
+import { QueryClient, QueryClientProvider } from 'react-query';
 
 function App({ children }: PropsWithChildren) {
     const themeConfig = useSelector((state: IRootState) => state.themeConfig);
@@ -19,9 +20,11 @@ function App({ children }: PropsWithChildren) {
         dispatch(toggleLocale(localStorage.getItem('i18nextLng') || themeConfig.locale));
         dispatch(toggleSemidark(localStorage.getItem('semidark') || themeConfig.semidark));
     }, [dispatch, themeConfig.theme, themeConfig.menu, themeConfig.layout, themeConfig.rtlClass, themeConfig.animation, themeConfig.navbar, themeConfig.locale, themeConfig.semidark]);
-
+    const queryClient = new QueryClient();
     return (
+        
         <AuthProvider>
+            <QueryClientProvider client={queryClient}>
         <div
             className={`${(store.getState().themeConfig.sidebar && 'toggle-sidebar') || ''} ${themeConfig.menu} ${themeConfig.layout} ${
                 themeConfig.rtlClass
@@ -29,6 +32,8 @@ function App({ children }: PropsWithChildren) {
         >
             {children}
         </div>
+        
+        </QueryClientProvider>
         </AuthProvider>
     );
 }

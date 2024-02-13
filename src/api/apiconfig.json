@@ -1,5 +1,5 @@
 {
-    "apiroot": "https://sweetdevelopers.com/api/v1",
+    "apiroot": "http://localhost:8990/api/v1",
     "apiendpoint": {
         "login": "/auth/login",
         "authcheck": "/auth/authcheck",
@@ -7,8 +7,14 @@
         "addemploy":"/employ/add",
         "listemploy":"/employ/list",
         "updatemploy":"/employ/update",
-        "deletetemploy":"/employ/delete"
-
-
+        "deletetemploy":"/employ/delete",
+        "projectlist":"/project/getprojectlist",
+        "addproject":"/project/addnewproject",
+        "updateproject":"/project/updateproject",
+        "deleteproject":"/project/deleteproject",
+        "listassignidbyproject":"/assignproject/getassignproject",
+        "updateassignidbyproject":"/assignproject/updateassignproject",
+        "addassignidbyproject":"/assignproject/addassignproject",
+        "deleteassignidbyproject":"/assignproject/deleteassignproject"
     }
 }

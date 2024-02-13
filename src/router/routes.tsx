@@ -1,5 +1,5 @@
 import { lazy } from 'react';
-import Customer from '../pages/Apps/Customer';
+import Project from '../pages/Apps/Project';
 const Index = lazy(() => import('../pages/Index'));
 const Analytics = lazy(() => import('../pages/Analytics'));
 const Finance = lazy(() => import('../pages/Finance'));
@@ -139,9 +139,9 @@ const routes = [
         element: <Contacts />,
     }, 
     {
-        path: '/apps/customer',
-        element: <Customer />,
-    },
+        path: '/apps/project',
+        element: <Project />,
+    }, 
     {
         path: '/apps/mailbox',
         element: <Mailbox />,
